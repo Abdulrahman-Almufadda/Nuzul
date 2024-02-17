@@ -4,7 +4,7 @@ import PropertyListings from './PropertyListings';
 const App = () => {
   return (
     <div>
-      <h1 style={{paddingLeft:700}}>Property Management</h1>
+      <h1 style={{paddingLeft:800}}>Property Management</h1>
       <PropertyListings />
     </div>
   );

@@ -15,9 +15,17 @@ const PropertyListings = () => {
   }, []);
 
   return (
-    <div>
-      {listings.map(listing => (
-        <div key={listing.id}>
+    <div className="property-listings">
+      {listings.map((listing, index) => (
+        <div key={listing.id} className="property-listing" style={{ width: '50%', display: 'inline-block', boxSizing: 'border-box', padding: '10px', paddingLeft:175 }}>
+          {listing.thumbnail && (
+            <img src={listing.thumbnail} alt="Property Thumbnail" style={{ maxWidth: '100%', height: 'auto' }} />
+          )}
+          <div className="property-details" style={{ fontSize: '0.8rem' }}>
+            <h2>{listing.title}</h2>
+            <p>{listing.address}</p>
+            <p>Price: ${listing.price}</p>
+          </div>
         </div>
       ))}
     </div>
