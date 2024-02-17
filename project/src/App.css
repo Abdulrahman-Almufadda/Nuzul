@@ -40,6 +40,18 @@
   background-color: #0056b3;
 }
 
+.btn-add-property {
+  background-color: #079c28;;
+  color: white;
+  padding: 5px 10px;
+  text-decoration: none;
+  border-radius: 5px;
+}
+
+.btn-add-property:hover {
+  background-color: #22ac67;
+}
+
 
 @keyframes App-logo-spin {
   from {
