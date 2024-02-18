@@ -1,6 +1,6 @@
-import './App.css';
 import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
+import { Grid, Card, CardMedia, CardContent, Typography, Button } from '@mui/material';
 import axios from 'axios';
 
 const PropertyListings = () => {
@@ -17,25 +17,34 @@ const PropertyListings = () => {
   }, []);
 
   return (
-    <div className="property-listings">
-      <h1 style={{paddingLeft:875}}>welcome</h1>
-      <div style={{paddingLeft:890}}>
-      <Link to="/property-form" className="btn-add-property">Add Property</Link>
-      </div>
-      {listings.map((listing, index) => (
-        <div key={listing.id} className="property-listing" style={{ width: '50%', display: 'inline-block', boxSizing: 'border-box', padding: '10px',paddingLeft:150 }}>
-          {listing.thumbnail && (
-            <img src={listing.thumbnail} alt="Property Thumbnail" style={{ maxWidth: '100%', height: 'auto' }} />
-          )}
-          <div className="property-details" style={{ fontSize: '0.8rem' }}>
-            <h2>{listing.title}</h2>
-            <p>{listing.address}</p>
-            <p>Price: ${listing.price}</p>
-            <Link to={`/property/${listing.id}`} className="btn-view-details">View Details</Link>
-          </div>
-        </div>
+    <Grid container spacing={2}>
+      {listings.map(listing => (
+        <Grid item key={listing.id} xs={12} sm={6} md={4} lg={3}>
+          <Card>
+            {listing.thumbnail && (
+              <CardMedia
+                component="img"
+                height="200"
+                image={listing.thumbnail}
+                alt={`Thumbnail for ${listing.title}`}
+              />
+            )}
+            <CardContent>
+              <Typography gutterBottom variant="h5" component="div">
+                {listing.title}
+              </Typography>
+              <Typography variant="body2" color="textSecondary" component="p">
+                {listing.address}
+              </Typography>
+              <Typography variant="body2" color="textSecondary" component="p">
+                Price: ${listing.price}
+              </Typography>
+              <Button component={Link} to={`/property/${listing.id}`} variant="contained">View Details</Button>
+            </CardContent>
+          </Card>
+        </Grid>
       ))}
-    </div>
+    </Grid>
   );
 };
 

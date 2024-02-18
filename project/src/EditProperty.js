@@ -1,20 +1,28 @@
-import React, { useState } from 'react';
-import { TextField, Grid, Button, Snackbar } from '@mui/material';
-import { useHistory } from 'react-router-dom';
+import React, { useState, useEffect } from 'react';
+import { useParams, useHistory } from 'react-router-dom';
+import { TextField, Grid, Button } from '@mui/material';
 import axios from 'axios';
 
-const PropertyForm = ({ property, onSubmit }) => {
+const EditPropertyForm = () => {
+  const { id } = useParams();
+  const history = useHistory();
   const [formData, setFormData] = useState({
-    title: property?.title || '',
-    address: property?.address || '',
-    price: property?.price || '',
-    description: property?.description || '',
-    thumbnail: property?.thumbnail || '',
+    title: '',
+    address: '',
+    price: '',
+    description: '',
+    thumbnail: '',
   });
 
-  const [successMessage, setSuccessMessage] = useState('');
-  const [openSnackbar, setOpenSnackbar] = useState(false);
-  const history = useHistory();
+  useEffect(() => {
+    axios.get(`https://65cd2742dd519126b840305e.mockapi.io/v1/hotels/${id}`)
+      .then(response => {
+        setFormData(response.data);
+      })
+      .catch(error => {
+        console.error('Error fetching data: ', error);
+      });
+  }, [id]);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -24,23 +32,13 @@ const PropertyForm = ({ property, onSubmit }) => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      const response = await axios.post('https://65cd2742dd519126b840305e.mockapi.io/v1/hotels', formData);
-      onSubmit(response.data);
-      history.push('/');
-      setFormData({
-        title: '',
-        address: '',
-        price: '',
-        description: '',
-        thumbnail: '',
-      });
+      await axios.put(`https://65cd2742dd519126b840305e.mockapi.io/v1/hotels/${id}`, formData);
+      history.push(`/property/${id}`);
     } catch (error) {
       console.error('Error submitting form: ', error);
     }
   };
-  
 
-  
   return (
     <form onSubmit={handleSubmit}>
       <Grid container spacing={2}>
@@ -89,7 +87,7 @@ const PropertyForm = ({ property, onSubmit }) => {
         </Grid>
         <Grid item xs={12}>
           <TextField
-            label="Thumbnail :Url"
+            label="Thumbnail"
             name="thumbnail"
             value={formData.thumbnail}
             onChange={handleChange}
@@ -105,4 +103,4 @@ const PropertyForm = ({ property, onSubmit }) => {
   );
 };
 
-export default PropertyForm;
+export default EditPropertyForm;
